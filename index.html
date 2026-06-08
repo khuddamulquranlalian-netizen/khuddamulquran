@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>خدام القرآن ویلفئیر لالیاں - مستقل ماہانہ حساب کتاب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', 'Noto Nastaliq Urdu', 'Roboto', sans-serif;
+            padding: 16px;
+            color: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            background: #0a0a2a;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Gradient Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #e94560);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Floating Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            z-index: -1;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+        
+        .orb1 { width: 300px; height: 300px; background: #e94560; top: 10%; left: -100px; animation-delay: 0s; }
+        .orb2 { width: 400px; height: 400px; background: #0f3460; bottom: 10%; right: -150px; animation-delay: -5s; }
+        .orb3 { width: 250px; height: 250px; background: #00b894; top: 50%; left: 20%; animation-delay: -10s; opacity: 0.3; }
+        .orb4 { width: 350px; height: 350px; background: #fdcb6e; bottom: 20%; right: 10%; animation-delay: -15s; opacity: 0.25; }
+        
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat linear infinite;
+        }
+        
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Rays */
+        .rays {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .ray {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: rayMove 8s linear infinite;
+        }
+        
+        @keyframes rayMove {
+            0% { transform: translateX(-100%) rotate(var(--angle)); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateX(100%) rotate(var(--angle)); opacity: 0; }
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+        
+        .header {
+            background: rgba(0, 110, 174);
+            backdrop-filter: blur(10px);
+            color: white;
+            border-radius: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+            border: 2px solid #f7ff17;
+        }
+        
+        .logo-area img {
+            width: auto;
+            height: 110px;
+            max-width: 180px;
+            display: block;
+            border: none;
+            border-radius: 0;
+        }
+        
+        .title-text h1 {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+        .title-text h1 i { margin-left: 6px; }
+        .title-text p { font-size: 1.0rem; opacity: 0.9; }
+        
+        .mode-badge {
+         display: none;
+        }
+        
+        .month-bar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 12px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 2px solid white;
+        }
+        
+        .month-picker {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 5px 12px;
+            border-radius: 40px;
+            flex-wrap: wrap;
+            color: white;
+            font-weight: bold;
+        }
+        
+        select, button, input {
+            padding: 8px 12px;
+            border-radius: 30px;
+            font-family: inherit;
+            font-size: 1.0rem;
+            font-weight: bold;
+            border: 1px solid #cfdfc7;
+        }
+        
+        button {
+            background: #006eae;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        button:hover { background: #1e5a3a; transform: scale(1.02); }
+        
+        .print-buttons { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .forms-row { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 30px; }
+        
+        .card { flex: 1; min-width: 260px; background: rgba(255,255,255,0.95); border-radius: 24px; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .card h2 { font-size: 1.2rem; margin-bottom: 12px; color: #1e3a2f; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { color: #1e3a2f; font-weight: bold; }
+        input { width: 100%; padding: 8px 10px; border-radius: 20px; border: 1px solid #cfdfc7; }
+        
+        .tables-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 10px;
+        }
+        
+        .data-table {
+            background: transparent;
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 10px;
+            overflow-x: auto;
+            width: 100%;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.1rem;
+            min-width: 500px;
+        }
+        
+        th, td {
+            border: 1px solid #d4e0cd;
+            padding: 12px 10px;
+            text-align: center;
+        }
+        
+        th {
+            background: #e8f0e4;
+            color: #1e3a2f;
+            font-weight: bold;
+        }
+        
+        .sortable {
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .sortable:hover { background: #c8e0b5; }
+        .sortable i { margin-right: 5px; font-size: 0.8rem; opacity: 0.6; }
+        
+        .delete-btn { background: #b34e3a; padding: 5px 10px; font-size: 0.8rem; border: none; border-radius: 20px; color: white; cursor: pointer; }
+        
+        .admin-login-area {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border-radius: 28px;
+            padding: 6px 8px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            align-items: center;
+            border: 2px solid white;
+        }
+        .admin-login-area span { color: #ffd700; margin-left: 50px; font-weight: bold; }
+        .admin-login-area input { width: 150px; margin-left: 20px; padding: 2px 10px; }
+        
+        /* بٹنوں کے سائز کے لیے */
+        .admin-login-area button {
+            width: auto;
+            min-width: 60px;
+            padding: 4px 2px;
+            font-size: 1.1rem;
+            margin-left: 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .translate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-size: 1.0rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .translate-btn:hover { transform: scale(1.05); }
+        .translate-btn i { margin-left: 8px; }
+        
+        .whatsapp-btn {
+            background: #016b29;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-size: 1.0rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .whatsapp-btn:hover { transform: scale(1.05); background: #128C7E; }
+        
+        .footer-note { font-size: 1.0rem; text-align: center; margin-top: 20px; color: #ffd700; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 20px; }
+        
+        .warning-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e74c3c;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 1000;
+            direction: rtl;
+            white-space: nowrap;
+            animation: fadeInOut 3s ease-in-out;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+        }
+        
+        .data-table h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: white;
+            border-right: 4px solid #ffd700;
+            padding-right: 12px;
+        }
+        .footer-note {
+            display: none;
+        }
+        
+        /* English Language Style */
+        body.lang-en {
+            direction: ltr;
+            text-align: left;
+        }
+        body.lang-en .header,
+        body.lang-en .month-bar,
+        body.lang-en .admin-login-area,
+        body.lang-en .data-table h3,
+        body.lang-en .footer-note,
+        body.lang-en .action-buttons {
+            direction: ltr;
+            text-align: left;
+        }
+        body.lang-en .data-table h3 {
+            border-left: 4px solid #ffd700;
+            border-right: none;
+            padding-left: 12px;
+            padding-right: 0;
+        }
+        
+        @media print { 
+            .animated-bg, .orb, .particles, .rays, .month-bar, .forms-row, 
+            .admin-login-area, .print-buttons, .delete-btn, .sortable, 
+            .warning-toast, .mode-badge, button, .admin-login-area input,
+            .admin-login-area span, .footer-note, .action-buttons {
+                display: none !important;
+            }
+            body { background: white !important; color: black !important; }
+            .header { background: #006eae !important; color: white !important; }
+            .data-table { background: white !important; page-break-after: always !important; }
+            table { border-collapse: collapse !important; width: 100% !important; }
+            th, td { border: 1px solid #000 !important; padding: 8px !important; text-align: center !important; }
+        }
+        
+        @media (max-width: 600px) {
+            .logo-area img { height: 80px; max-width: 100px; }
+            .title-text h1 { font-size: 1.5rem; }
+            th, td { padding: 6px 3px; font-size: 0.7rem; }
+            .data-table h3 { font-size: 1.1rem; }
+            .admin-login-area button {
+                min-width: 55px;
+                padding: 2px 5px;
+                font-size: 1.0rem;
+            }
+            .admin-login-area input {
+                width: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="orb orb4"></div>
+    <div class="particles" id="particles"></div>
+    <div class="rays" id="rays"></div>
+
+<div class="container">
+    <div class="header">
+        <div class="logo-area">
+            <img src="https://user-uploads-thumbs.shutterstock.com/aws-cloudfront-user-asset-uploads-prod-us-east-1/uploads/2924ad88-bfab-47c5-a517-501fe44d9c00/p/404a6d10dfce49f13b3b94935a117c0b12bf0fa9/1780853764945/logo%20(4)/png/1780853768/1500x1500/fit/07fd243848d089b6b17b66300efa486f1d3253f5/logo%20(4).jpg" alt="خدام القرآن لوگو">
+        </div>
+        <div class="title-text">
+            <h1 id="mainTitle"><i class="fas fa-book-quran"></i> خدام القرآن ویلفئیر لالیاں</h1>
+            <p id="subTitle">مستقل ریکارڈ | ماہانہ اخراجات و عطیات | پرمننٹ ڈیٹا (2019 سے)</p>
+            <div class="mode-badge" id="modeBadge"><i class="fas fa-eye"></i> <span id="modeText">صرف دیکھنے کا</span></div>
+        </div>
+    </div>
+
+    <div class="admin-login-area">
+        <span style="font-size:1.0rem;"><i class="fas fa-lock"></i> <span id="adminPanelText">ایڈمن پینل (ترمیم کے لیے)</span></span>
+        <input type="password" id="adminPass" placeholder="پاس ورڈ درج کریں">
+        <button id="enableEditBtn"><i class="fas fa-edit"></i> <span id="editModeText">ترمیم موڈ</span></button>
+        <button id="disableEditBtn" style="background:#9e4403; color: #000000;"><i class="fas fa-eye"></i> <span id="viewOnlyText">صرف دیکھنا</span></button>
+    </div>
+
+    <div class="action-buttons">
+        <button id="translateBtn" class="translate-btn">
+            <i class="fas fa-language"></i> <span id="translateBtnText">English / اردو</span>
+        </button>
+        <a href="https://wa.me/923458075569?text=Assalamu%20Alaikum%20-%20خدام%20القرآن%20ویلفئیر%20لالیاں%20سے%20رابطہ" 
+           target="_blank" class="whatsapp-btn" id="whatsappBtn">
+            <i class="fab fa-whatsapp"></i> <span id="whatsappText">WhatsApp پر رابطہ کریں</span>
+        </a>
+    </div>
+
+    <div class="month-bar">
+        <div class="month-picker">
+            <label><i class="fas fa-calendar-alt"></i> ماہ منتخب کریں (جنوری 2019 سے):</label>
+            <select id="monthSelect"></select>
+            <button id="loadMonthBtn"><i class="fas fa-sync-alt"></i> لوڈ کریں</button>
+        </div>
+        <div class="print-buttons">
+            <button id="printPage1Btn"><i class="fas fa-print"></i> <span id="printPage1Text">صفحہ 1 (اخراجات)</span></button>
+            <button id="printPage2Btn"><i class="fas fa-print"></i> <span id="printPage2Text">صفحہ 2 (عطیات)</span></button>
+            <button id="fullPrintBtn"><i class="fas fa-file-pdf"></i> <span id="fullPrintText">دونوں صفحات</span></button>
+        </div>
+    </div>
+
+    <div class="forms-row" id="adminFormsContainer" style="display: none;">
+        <div class="card">
+            <h2><i class="fas fa-receipt"></i> <span id="expenseFormTitle">صفحہ 1 - نیا اخراجات</span></h2>
+            <form id="expenseForm">
+                <div class="form-group"><label id="expDateLabel">تاریخ (YYYY-MM-DD)</label><input type="date" id="expDate" required></div>
+                <div class="form-group"><label id="expItemLabel">نام اشیاء</label><input type="text" id="expItem" required></div>
+                <div class="form-group"><label id="expAmountLabel">رقم (PKR)</label><input type="number" id="expAmount" step="0.01" required></div>
+                <div class="form-group"><label id="expSignLabel">دستخط</label><input type="text" id="expSign" placeholder="اختیاری"></div>
+                <button type="submit"><i class="fas fa-save"></i> <span id="expSaveBtn">محفوظ کریں</span></button>
+            </form>
+        </div>
+        <div class="card">
+            <h2><i class="fas fa-hand-holding-heart"></i> <span id="donationFormTitle">صفحہ 2 - نیا عطیہ</span></h2>
+            <form id="donationForm">
+                <div class="form-group"><label id="donDateLabel">تاریخ</label><input type="date" id="donDate" required></div>
+                <div class="form-group"><label id="donorNameLabel">نام ڈونیٹر</label><input type="text" id="donorName" required></div>
+                <div class="form-group"><label id="donAmountLabel">رقم (PKR)</label><input type="number" id="donAmount" step="0.01" required></div>
+                <div class="form-group"><label id="donSignLabel">دستخط</label><input type="text" id="donSign" placeholder="اختیاری"></div>
+                <button type="submit"><i class="fas fa-donate"></i> <span id="donSaveBtn">محفوظ کریں</span></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="tables-section">
+        <div class="data-table">
+            <h3><i class="fas fa-chart-line"></i> <span id="expenseTableTitle">اخراجات (صفحہ 1)</span></h3>
+            <table id="expenseTable">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-sort="date" data-table="expense"><span id="expDateCol">تاریخ</span> <i class="fas fa-arrows-up-down"></i></th>
+                        <th class="sortable" data-sort="item" data-table="expense"><span id="expItemCol">اشیاء</span> <i class="fas fa-arrows-up-down"></i></th>
+                        <th class="sortable" data-sort="amount" data-table="expense"><span id="expAmountCol">رقم</span> <i class="fas fa-arrows-up-down"></i></th>
+                        <th><span id="expSignCol">دستخط</span></th>
+                        <th><span id="expActionCol">عمل</span></th>
+                    </tr>
+                </thead>
+                <tbody id="expenseTableBody">
+                    <tr><td colspan="5" id="expEmptyMsg">ماہ منتخب کریں</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data-table">
+            <h3><i class="fas fa-heart"></i> <span id="donationTableTitle">عطیات (صفحہ 2)</span></h3>
+            <table id="donationTable">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-sort="date" data-table="donation"><span id="donDateCol">تاریخ</span> <i class="fas fa-arrows-up-down"></i></th>
+                        <th class="sortable" data-sort="donor" data-table="donation"><span id="donDonorCol">نام ڈونیٹر</span> <i class="fas fa-arrows-up-down"></i></th>
+                        <th class="sortable" data-sort="amount" data-table="donation"><span id="donAmountCol">ڈونیشن</span> <i class="fas fa-arrows-up-down"></i></th>
+                        <th><span id="donSignCol">دستخط</span></th>
+                        <th><span id="donActionCol">عمل</span></th>
+                    </tr>
+                </thead>
+                <tbody id="donationTableBody">
+                    <tr><td colspan="5" id="donEmptyMsg">ماہ منتخب کریں</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="footer-note"><i class="fas fa-database"></i> <span id="footerText">خدام القرآن ویلفئیر لالیاں - خدمت خلق</span></div>
+</div>
+
+<script>
+    // Create Particles
+    function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = Math.random() * 5 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = Math.random() * 10 + 5 + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.opacity = Math.random() * 0.5 + 0.2;
+            particlesContainer.appendChild(particle);
+        }
+    }
+    
+    function createRays() {
+        const raysContainer = document.getElementById('rays');
+        for (let i = 0; i < 8; i++) {
+            const ray = document.createElement('div');
+            ray.classList.add('ray');
+            const angle = (i * 45) + Math.random() * 20;
+            ray.style.setProperty('--angle', angle + 'deg');
+            ray.style.top = Math.random() * 100 + '%';
+            ray.style.animationDuration = Math.random() * 5 + 5 + 's';
+            ray.style.animationDelay = Math.random() * 3 + 's';
+            raysContainer.appendChild(ray);
+        }
+    }
+    
+    createParticles();
+    createRays();
+    
+    // Translation Data
+    const translations = {
+        ur: {
+            mainTitle: "خدام القرآن ویلفئیر لالیاں",
+            subTitle: "مستقل ریکارڈ | ماہانہ اخراجات و عطیات | پرمننٹ ڈیٹا (2019 سے)",
+            modeText: "صرف دیکھنے کا",
+            adminPanelText: "ایڈمن پینل (ترمیم کے لیے)",
+            editModeText: "ترمیم موڈ",
+            viewOnlyText: "صرف دیکھنا",
+            translateBtnText: "English / اردو",
+            whatsappText: "WhatsApp پر رابطہ کریں",
+            monthLabel: "ماہ (جنوری 2019 سے):",
+            loadBtnText: "لوڈ",
+            printPage1Text: "صفحہ 1 (اخراجات)",
+            printPage2Text: "صفحہ 2 (عطیات)",
+            fullPrintText: "دونوں صفحات",
+            expenseFormTitle: "صفحہ 1 - نیا اخراجات",
+            donationFormTitle: "صفحہ 2 - نیا عطیہ",
+            expDateLabel: "تاریخ (YYYY-MM-DD)",
+            expItemLabel: "نام اشیاء",
+            expAmountLabel: "رقم (PKR)",
+            expSignLabel: "دستخط",
+            expSaveBtn: "محفوظ کریں",
+            donDateLabel: "تاریخ",
+            donorNameLabel: "نام ڈونیٹر",
+            donAmountLabel: "رقم (PKR)",
+            donSignLabel: "دستخط",
+            donSaveBtn: "محفوظ کریں",
+            expenseTableTitle: "اخراجات (صفحہ 1)",
+            donationTableTitle: "عطیات (صفحہ 2)",
+            expDateCol: "تاریخ",
+            expItemCol: "اشیاء",
+            expAmountCol: "رقم",
+            expSignCol: "دستخط",
+            expActionCol: "عمل",
+            donDateCol: "تاریخ",
+            donDonorCol: "نام ڈونیٹر",
+            donAmountCol: "ڈونیشن",
+            donSignCol: "دستخط",
+            donActionCol: "عمل",
+            expEmptyMsg: "ماہ منتخب کریں",
+            donEmptyMsg: "ماہ منتخب کریں",
+            footerText: "تمام ڈیٹا مستقل محفوظ | صرف مجاز ایڈمن ترمیم کر سکتے ہیں",
+            editModeActive: "✅ ترمیم موڈ فعال! اب آپ ڈیٹا شامل/حذف کر سکتے ہیں۔",
+            editModeWarning: "⚠️ آپ صرف دیکھ سکتے ہیں، ترمیم کی اجازت نہیں ہے۔ صحیح پاس ورڈ درکار ہے۔",
+            viewOnlyActive: "👁️ صرف دیکھنے کا موڈ فعال",
+            expenseSaved: "✅ اخراجات محفوظ",
+            donationSaved: "✅ عطیہ محفوظ",
+            selectMonthFirst: "پہلے مہینہ منتخب کریں",
+            enterValidInfo: "درست معلومات درج کریں",
+            deleteConfirm: "حذف کریں؟",
+            noExpenses: "اس ماہ کوئی اخراجات نہیں",
+            noDonations: "اس ماہ کوئی عطیات نہیں"
+        },
+        en: {
+            mainTitle: "Khuddam ul Quran Welfare Lalian",
+            subTitle: "Permanent Record | Monthly Expenses & Donations | Permanent Data (From 2019)",
+            modeText: "Read Only Mode",
+            adminPanelText: "Admin Panel (For Editing)",
+            editModeText: "Edit Mode",
+            viewOnlyText: "View Only",
+            translateBtnText: "اردو / English",
+            whatsappText: "Contact on WhatsApp",
+            monthLabel: "Month (From January 2019):",
+            loadBtnText: "Load",
+            printPage1Text: "Page 1 (Expenses)",
+            printPage2Text: "Page 2 (Donations)",
+            fullPrintText: "Both Pages",
+            expenseFormTitle: "Page 1 - New Expense",
+            donationFormTitle: "Page 2 - New Donation",
+            expDateLabel: "Date (YYYY-MM-DD)",
+            expItemLabel: "Item Name",
+            expAmountLabel: "Amount (PKR)",
+            expSignLabel: "Signature",
+            expSaveBtn: "Save",
+            donDateLabel: "Date",
+            donorNameLabel: "Donor Name",
+            donAmountLabel: "Amount (PKR)",
+            donSignLabel: "Signature",
+            donSaveBtn: "Save",
+            expenseTableTitle: "Expenses (Page 1)",
+            donationTableTitle: "Donations (Page 2)",
+            expDateCol: "Date",
+            expItemCol: "Item",
+            expAmountCol: "Amount",
+            expSignCol: "Signature",
+            expActionCol: "Action",
+            donDateCol: "Date",
+            donDonorCol: "Donor Name",
+            donAmountCol: "Donation",
+            donSignCol: "Signature",
+            donActionCol: "Action",
+            expEmptyMsg: "Select a month",
+            donEmptyMsg: "Select a month",
+            footerText: "All data is permanently saved | Only authorized admin can edit",
+            editModeActive: "✅ Edit mode activated! You can now add/delete data.",
+            editModeWarning: "⚠️ You can only view, editing is not allowed. Correct password required.",
+            viewOnlyActive: "👁️ View only mode activated",
+            expenseSaved: "✅ Expense saved",
+            donationSaved: "✅ Donation saved",
+            selectMonthFirst: "Please select a month first",
+            enterValidInfo: "Please enter valid information",
+            deleteConfirm: "Delete?",
+            noExpenses: "No expenses this month",
+            noDonations: "No donations this month"
+        }
+    };
+    
+    let currentLanguage = 'ur';
+    
+    function updateLanguage() {
+        const t = translations[currentLanguage];
+        document.getElementById('mainTitle').innerHTML = `<i class="fas fa-book-quran"></i> ${t.mainTitle}`;
+        document.getElementById('subTitle').innerText = t.subTitle;
+        document.getElementById('modeText').innerText = t.modeText;
+        document.getElementById('adminPanelText').innerText = t.adminPanelText;
+        document.getElementById('editModeText').innerText = t.editModeText;
+        document.getElementById('viewOnlyText').innerText = t.viewOnlyText;
+        document.getElementById('translateBtnText').innerText = t.translateBtnText;
+        document.getElementById('whatsappText').innerText = t.whatsappText;
+        document.getElementById('monthLabel').innerHTML = `<i class="fas fa-calendar-alt"></i> ${t.monthLabel}`;
+        document.getElementById('loadBtnText').innerText = t.loadBtnText;
+        document.getElementById('printPage1Text').innerText = t.printPage1Text;
+        document.getElementById('printPage2Text').innerText = t.printPage2Text;
+        document.getElementById('fullPrintText').innerText = t.fullPrintText;
+        document.getElementById('expenseFormTitle').innerHTML = `<i class="fas fa-receipt"></i> ${t.expenseFormTitle}`;
+        document.getElementById('donationFormTitle').innerHTML = `<i class="fas fa-hand-holding-heart"></i> ${t.donationFormTitle}`;
+        document.getElementById('expDateLabel').innerText = t.expDateLabel;
+        document.getElementById('expItemLabel').innerText = t.expItemLabel;
+        document.getElementById('expAmountLabel').innerText = t.expAmountLabel;
+        document.getElementById('expSignLabel').innerText = t.expSignLabel;
+        document.getElementById('expSaveBtn').innerText = t.expSaveBtn;
+        document.getElementById('donDateLabel').innerText = t.donDateLabel;
+        document.getElementById('donorNameLabel').innerText = t.donorNameLabel;
+        document.getElementById('donAmountLabel').innerText = t.donAmountLabel;
+        document.getElementById('donSignLabel').innerText = t.donSignLabel;
+        document.getElementById('donSaveBtn').innerText = t.donSaveBtn;
+        document.getElementById('expenseTableTitle').innerHTML = `<i class="fas fa-chart-line"></i> ${t.expenseTableTitle}`;
+        document.getElementById('donationTableTitle').innerHTML = `<i class="fas fa-heart"></i> ${t.donationTableTitle}`;
+        document.getElementById('expDateCol').innerText = t.expDateCol;
+        document.getElementById('expItemCol').innerText = t.expItemCol;
+        document.getElementById('expAmountCol').innerText = t.expAmountCol;
+        document.getElementById('expSignCol').innerText = t.expSignCol;
+        document.getElementById('expActionCol').innerText = t.expActionCol;
+        document.getElementById('donDateCol').innerText = t.donDateCol;
+        document.getElementById('donDonorCol').innerText = t.donDonorCol;
+        document.getElementById('donAmountCol').innerText = t.donAmountCol;
+        document.getElementById('donSignCol').innerText = t.donSignCol;
+        document.getElementById('donActionCol').innerText = t.donActionCol;
+        document.getElementById('expEmptyMsg').innerText = t.expEmptyMsg;
+        document.getElementById('donEmptyMsg').innerText = t.donEmptyMsg;
+        document.getElementById('footerText').innerText = t.footerText;
+        
+        if (currentLanguage === 'en') {
+            document.body.classList.add('lang-en');
+            document.body.dir = 'ltr';
+        } else {
+            document.body.classList.remove('lang-en');
+            document.body.dir = 'rtl';
+        }
+    }
+    
+    document.getElementById('translateBtn').onclick = () => {
+        currentLanguage = currentLanguage === 'ur' ? 'en' : 'ur';
+        updateLanguage();
+        loadAndRenderData();
+    };
+    
+    const FIXED_ADMIN_PASSWORD = "Quran@20104299";
+    let currentMonth = "";
+    let isAdminMode = false;
+    
+    let expenseSortColumn = "date";
+    let expenseSortOrder = "asc";
+    let donationSortColumn = "date";
+    let donationSortOrder = "asc";
+    
+    let currentExpenses = [];
+    let currentDonations = [];
+
+    function showWarningMessage(message) {
+        const existing = document.querySelector('.warning-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.className = 'warning-toast';
+        toast.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    function getAllExpenses() { return JSON.parse(localStorage.getItem("Khidmat_Expenses_Permanent") || "[]"); }
+    function getAllDonations() { return JSON.parse(localStorage.getItem("Khidmat_Donations_Permanent") || "[]"); }
+    function saveAllExpenses(data) { localStorage.setItem("Khidmat_Expenses_Permanent", JSON.stringify(data)); }
+    function saveAllDonations(data) { localStorage.setItem("Khidmat_Donations_Permanent", JSON.stringify(data)); }
+    function generateId() { return Date.now() + '-' + Math.random().toString(36).substr(2, 8); }
+    function addExpense(obj) { let arr = getAllExpenses(); arr.push(obj); saveAllExpenses(arr); }
+    function addDonation(obj) { let arr = getAllDonations(); arr.push(obj); saveAllDonations(arr); }
+    function deleteExpense(id) { saveAllExpenses(getAllExpenses().filter(e => e.id !== id)); }
+    function deleteDonation(id) { saveAllDonations(getAllDonations().filter(d => d.id !== id)); }
+    function filterByMonth(items, month) { return items.filter(i => i.month === month); }
+
+    function sortExpenses() {
+        if (!currentExpenses.length) return;
+        currentExpenses.sort((a, b) => {
+            let valA, valB;
+            if (expenseSortColumn === 'date') {
+                valA = new Date(a.date);
+                valB = new Date(b.date);
+            } else if (expenseSortColumn === 'item') {
+                valA = (a.item || '').toLowerCase();
+                valB = (b.item || '').toLowerCase();
+            } else if (expenseSortColumn === 'amount') {
+                valA = parseFloat(a.amount) || 0;
+                valB = parseFloat(b.amount) || 0;
+            }
+            if (valA < valB) return expenseSortOrder === 'asc' ? -1 : 1;
+            if (valA > valB) return expenseSortOrder === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }
+
+    function sortDonations() {
+        if (!currentDonations.length) return;
+        currentDonations.sort((a, b) => {
+            let valA, valB;
+            if (donationSortColumn === 'date') {
+                valA = new Date(a.date);
+                valB = new Date(b.date);
+            } else if (donationSortColumn === 'donor') {
+                valA = (a.donor || '').toLowerCase();
+                valB = (b.donor || '').toLowerCase();
+            } else if (donationSortColumn === 'amount') {
+                valA = parseFloat(a.amount) || 0;
+                valB = parseFloat(b.amount) || 0;
+            }
+            if (valA < valB) return donationSortOrder === 'asc' ? -1 : 1;
+            if (valA > valB) return donationSortOrder === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }
+
+    function renderTablesBody() {
+        const t = translations[currentLanguage];
+        const expBody = document.getElementById("expenseTableBody");
+        if (currentExpenses.length === 0) {
+            expBody.innerHTML = `<tr><td colspan="5">${t.noExpenses}</td></tr>`;
+        } else {
+            expBody.innerHTML = currentExpenses.map(exp => `
+                <tr>
+                    <td>${escapeHtml(exp.date)}</td>
+                    <td>${escapeHtml(exp.item)}</td>
+                    <td>${parseFloat(exp.amount).toFixed(2)} PKR</td>
+                    <td>${escapeHtml(exp.sign || '—')}</td>
+                    <td>${isAdminMode ? `<button class="delete-btn" data-type="expense" data-id="${exp.id}"><i class="fas fa-trash-alt"></i> ${t.expActionCol}</button>` : '—'}</td>
+                </tr>
+            `).join('');
+        }
+
+        const donBody = document.getElementById("donationTableBody");
+        if (currentDonations.length === 0) {
+            donBody.innerHTML = `<tr><td colspan="5">${t.noDonations}</td></tr>`;
+        } else {
+            donBody.innerHTML = currentDonations.map(don => `
+                <tr>
+                    <td>${escapeHtml(don.date)}</td>
+                    <td>${escapeHtml(don.donor)}</td>
+                    <td>${parseFloat(don.amount).toFixed(2)} PKR</td>
+                    <td>${escapeHtml(don.sign || '—')}</td>
+                    <td>${isAdminMode ? `<button class="delete-btn" data-type="donation" data-id="${don.id}"><i class="fas fa-trash-alt"></i> ${t.donActionCol}</button>` : '—'}</td>
+                </tr>
+            `).join('');
+        }
+
+        if (isAdminMode) {
+            document.querySelectorAll('.delete-btn[data-type="expense"]').forEach(btn => btn.onclick = () => { if(confirm(t.deleteConfirm)) { deleteExpense(btn.dataset.id); loadAndRenderData(); } });
+            document.querySelectorAll('.delete-btn[data-type="donation"]').forEach(btn => btn.onclick = () => { if(confirm(t.deleteConfirm)) { deleteDonation(btn.dataset.id); loadAndRenderData(); } });
+        }
+    }
+
+    function loadAndRenderData() {
+        if (!currentMonth) {
+            const t = translations[currentLanguage];
+            document.getElementById("expenseTableBody").innerHTML = `<tr><td colspan="5">${t.expEmptyMsg}</td></tr>`;
+            document.getElementById("donationTableBody").innerHTML = `<tr><td colspan="5">${t.donEmptyMsg}</td></tr>`;
+            currentExpenses = [];
+            currentDonations = [];
+            return;
+        }
+        const allExpenses = getAllExpenses();
+        const allDonations = getAllDonations();
+        currentExpenses = filterByMonth(allExpenses, currentMonth);
+        currentDonations = filterByMonth(allDonations, currentMonth);
+        
+        sortExpenses();
+        sortDonations();
+        
+        renderTablesBody();
+    }
+
+    function handleSort(table, column) {
+        if (table === 'expense') {
+            if (expenseSortColumn === column) {
+                expenseSortOrder = expenseSortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                expenseSortColumn = column;
+                expenseSortOrder = 'asc';
+            }
+            sortExpenses();
+        } else if (table === 'donation') {
+            if (donationSortColumn === column) {
+                donationSortOrder = donationSortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                donationSortColumn = column;
+                donationSortOrder = 'asc';
+            }
+            sortDonations();
+        }
+        renderTablesBody();
+        updateSortIcons();
+    }
+
+    function updateSortIcons() {
+        document.querySelectorAll('#expenseTable .sortable').forEach(th => {
+            const column = th.dataset.sort;
+            const icon = th.querySelector('i');
+            if (column === expenseSortColumn) {
+                icon.className = expenseSortOrder === 'asc' ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
+            } else {
+                icon.className = 'fas fa-arrows-up-down';
+            }
+        });
+        document.querySelectorAll('#donationTable .sortable').forEach(th => {
+            const column = th.dataset.sort;
+            const icon = th.querySelector('i');
+            if (column === donationSortColumn) {
+                icon.className = donationSortOrder === 'asc' ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
+            } else {
+                icon.className = 'fas fa-arrows-up-down';
+            }
+        });
+    }
+
+    function populateMonthSelect() {
+        let select = document.getElementById("monthSelect");
+        for(let y=2019; y<=2028; y++) for(let m=1; m<=12; m++){ let val=`${y}-${String(m).padStart(2,'0')}`; select.appendChild(new Option(`${new Date(y,m-1).toLocaleString('ur',{month:'long'})} ${y}`, val)); }
+        let now = new Date(); let defaultMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+        select.value = [...select.options].some(o=>o.value===defaultMonth) ? defaultMonth : "2019-01";
+        currentMonth = select.value;
+        loadAndRenderData();
+    }
+    
+    function loadSelectedMonth() { 
+        currentMonth = document.getElementById("monthSelect").value; 
+        loadAndRenderData(); 
+    }
+    
+    function enableEditMode() {
+        if (document.getElementById("adminPass").value === FIXED_ADMIN_PASSWORD) {
+            isAdminMode = true;
+            document.getElementById("adminFormsContainer").style.display = "flex";
+            document.getElementById("modeBadge").style.background = "#f1c40f";
+            renderTablesBody();
+            document.getElementById("adminPass").value = "";
+            showWarningMessage(translations[currentLanguage].editModeActive);
+        } else {
+            showWarningMessage(translations[currentLanguage].editModeWarning);
+        }
+    }
+    
+    function disableEditMode() { 
+        isAdminMode=false; 
+        document.getElementById("adminFormsContainer").style.display="none"; 
+        document.getElementById("modeBadge").style.background="#ffd966"; 
+        renderTablesBody(); 
+        showWarningMessage(translations[currentLanguage].viewOnlyActive); 
+    }
+
+    document.getElementById("expenseForm").onsubmit = (e) => { 
+        e.preventDefault(); 
+        const t = translations[currentLanguage];
+        if(!isAdminMode){ showWarningMessage(t.editModeWarning); return; } 
+        if(!currentMonth){ showWarningMessage(t.selectMonthFirst); return; } 
+        let date=document.getElementById("expDate").value, item=document.getElementById("expItem").value.trim(), amount=parseFloat(document.getElementById("expAmount").value), sign=document.getElementById("expSign").value; 
+        if(!date||!item||isNaN(amount)){ showWarningMessage(t.enterValidInfo); return; } 
+        addExpense({ id:generateId(), month:currentMonth, date, item, amount, sign:sign||"" }); 
+        loadAndRenderData(); 
+        e.target.reset(); 
+        showWarningMessage(t.expenseSaved); 
+    };
+    
+    document.getElementById("donationForm").onsubmit = (e) => { 
+        e.preventDefault(); 
+        const t = translations[currentLanguage];
+        if(!isAdminMode){ showWarningMessage(t.editModeWarning); return; } 
+        if(!currentMonth){ showWarningMessage(t.selectMonthFirst); return; } 
+        let date=document.getElementById("donDate").value, donor=document.getElementById("donorName").value.trim(), amount=parseFloat(document.getElementById("donAmount").value), sign=document.getElementById("donSign").value; 
+        if(!date||!donor||isNaN(amount)){ showWarningMessage(t.enterValidInfo); return; } 
+        addDonation({ id:generateId(), month:currentMonth, date, donor, amount, sign:sign||"" }); 
+        loadAndRenderData(); 
+        e.target.reset(); 
+        showWarningMessage(t.donationSaved); 
+    };
+    
+    document.getElementById("enableEditBtn").onclick = enableEditMode;
+    document.getElementById("disableEditBtn").onclick = disableEditMode;
+    document.getElementById("loadMonthBtn").onclick = loadSelectedMonth;
+    
+    document.querySelectorAll('#expenseTable .sortable').forEach(th => {
+        th.onclick = () => handleSort('expense', th.dataset.sort);
+    });
+    document.querySelectorAll('#donationTable .sortable').forEach(th => {
+        th.onclick = () => handleSort('donation', th.dataset.sort);
+    });
+    
+    function printPage(selector, title) { let content = document.querySelector(selector).cloneNode(true); content.querySelectorAll('.delete-btn').forEach(btn=>btn.remove()); let win=window.open(); win.document.write(`<html dir="rtl"><head><title>${title}</title><style>body{padding:20px} table{border:1px solid #000;width:100%;border-collapse:collapse} th,td{border:1px solid #000;padding:6px}</style></head><body><h2>خدام القرآن ویلفئیر لالیاں</h2><p>ماہ: ${currentMonth}</p>${content.innerHTML}</body></html>`); win.document.close(); win.print(); }
+    document.getElementById("printPage1Btn").onclick = () => { if(currentMonth) printPage(".data-table:first-child","اخراجات"); else showWarningMessage(translations[currentLanguage].selectMonthFirst); };
+    document.getElementById("printPage2Btn").onclick = () => { if(currentMonth) printPage(".data-table:last-child","عطیات"); else showWarningMessage(translations[currentLanguage].selectMonthFirst); };
+    document.getElementById("fullPrintBtn").onclick = () => { if(!currentMonth) { showWarningMessage(translations[currentLanguage].selectMonthFirst); return; } let exp=document.querySelector(".data-table:first-child").cloneNode(true); let don=document.querySelector(".data-table:last-child").cloneNode(true); exp.querySelectorAll('.delete-btn').forEach(btn=>btn.remove()); don.querySelectorAll('.delete-btn').forEach(btn=>btn.remove()); let win=window.open(); win.document.write(`<html dir="rtl"><head><title>مکمل رپورٹ</title><style>body{padding:20px} table{border:1px solid #000;width:100%} th,td{border:1px solid #000;padding:6px} .page-break{page-break-before:always}</style></head><body><h2>خدام القرآن ویلفئیر لالیاں</h2><p>ماہ: ${currentMonth}</p>${exp.outerHTML}<div class="page-break"></div>${don.outerHTML}</body></html>`); win.document.close(); win.print(); };
+    
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=>m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+    
+    populateMonthSelect(); 
+    disableEditMode(); 
+    loadSelectedMonth();
+    updateLanguage();
+</script>
+</body>
+</html>
