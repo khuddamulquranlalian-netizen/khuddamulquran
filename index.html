@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>خدام القرآن ویلفئیر لالیاں - مستقل ماہانہ حساب کتاب</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -115,50 +114,57 @@
         .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
         
         .header {
-            background: rgba(0, 110, 174);
-            backdrop-filter: blur(10px);
             color: white;
-            border-radius: 28px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 0px;
             flex-wrap: wrap;
             width: 100%;
             justify-content: center;
             text-align: center;
-            border: 2px solid #f7ff17;
         }
         
         .logo-area img {
             width: auto;
-            height: 110px;
-            max-width: 180px;
+            height: 130px;
+            max-width: auto;
             display: block;
             border: none;
             border-radius: 0;
+            animation: logoGlow 2s ease-in-out infinite;
+            transition: transform 0.3s;
+        }
+
+        .logo-area img:hover {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        @keyframes logoGlow {
+            0% { filter: drop-shadow(0 0 0px gold); transform: translateY(0px); }
+            50% { filter: drop-shadow(0 0 10px gold); transform: translateY(-5px); }
+            100% { filter: drop-shadow(0 0 0px gold); transform: translateY(0px); }
         }
         
         .title-text h1 {
-            font-size: 1.4rem;
+            font-size: 2.1rem;
             margin-bottom: 4px;
         }
-        .title-text h1 i { margin-left: 6px; }
-        .title-text p { font-size: 1.0rem; opacity: 0.9; }
+        .title-text p { font-size: 1.0rem; opacity: 1.0; }
         
         .mode-badge {
-         display: none;
+            display: none;
         }
         
         .month-bar {
             background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 28px;
-            padding: 12px 16px;
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 3px 8px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 12px;
+            gap: 3px;
             margin-bottom: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             border: 2px solid white;
@@ -244,9 +250,30 @@
             transition: background 0.2s;
         }
         .sortable:hover { background: #c8e0b5; }
-        .sortable i { margin-right: 5px; font-size: 0.8rem; opacity: 0.6; }
+        .sortable i { margin-right: 5px; font-size: 0.8rem; opacity: 0.6; display: none; }
         
-        .delete-btn { background: #b34e3a; padding: 5px 10px; font-size: 0.8rem; border: none; border-radius: 20px; color: white; cursor: pointer; }
+        .edit-btn {
+            background: #f39c12;
+            padding: 5px 8px;
+            font-size: 0.75rem;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        .edit-btn:hover { background: #e67e22; }
+        
+        .delete-btn { 
+            background: #b34e3a; 
+            padding: 5px 8px; 
+            font-size: 0.75rem; 
+            border: none; 
+            border-radius: 20px; 
+            color: white; 
+            cursor: pointer;
+        }
+        .delete-btn:hover { background: #8e3a2a; }
         
         .admin-login-area {
             background: rgba(255, 255, 255, 0.15);
@@ -264,7 +291,6 @@
         .admin-login-area span { color: #ffd700; margin-left: 50px; font-weight: bold; }
         .admin-login-area input { width: 150px; margin-left: 20px; padding: 2px 10px; }
         
-        /* بٹنوں کے سائز کے لیے */
         .admin-login-area button {
             width: auto;
             min-width: 60px;
@@ -300,7 +326,6 @@
             transition: 0.3s;
         }
         .translate-btn:hover { transform: scale(1.05); }
-        .translate-btn i { margin-left: 8px; }
         
         .whatsapp-btn {
             background: #016b29;
@@ -319,7 +344,7 @@
         }
         .whatsapp-btn:hover { transform: scale(1.05); background: #128C7E; }
         
-        .footer-note { font-size: 1.0rem; text-align: center; margin-top: 20px; color: #ffd700; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 20px; }
+        .footer-note { font-size: 1.0rem; text-align: center; margin-top: 20px; color: #ffd700; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 20px; display: none; }
         
         .warning-toast {
             position: fixed;
@@ -352,8 +377,42 @@
             border-right: 4px solid #ffd700;
             padding-right: 12px;
         }
-        .footer-note {
+        
+        /* Edit Modal Styles */
+        .modal {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            color: #1e3a2f;
+            padding: 20px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .modal-content h3 {
+            margin-bottom: 15px;
+        }
+        .modal-content input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+        .modal-content button {
+            margin: 5px;
+            padding: 8px 15px;
         }
         
         /* English Language Style */
@@ -379,9 +438,9 @@
         
         @media print { 
             .animated-bg, .orb, .particles, .rays, .month-bar, .forms-row, 
-            .admin-login-area, .print-buttons, .delete-btn, .sortable, 
+            .admin-login-area, .print-buttons, .delete-btn, .edit-btn, .sortable, 
             .warning-toast, .mode-badge, button, .admin-login-area input,
-            .admin-login-area span, .footer-note, .action-buttons {
+            .admin-login-area span, .footer-note, .action-buttons, .modal {
                 display: none !important;
             }
             body { background: white !important; color: black !important; }
@@ -392,18 +451,40 @@
         }
         
         @media (max-width: 600px) {
-            .logo-area img { height: 80px; max-width: 100px; }
-            .title-text h1 { font-size: 1.5rem; }
-            th, td { padding: 6px 3px; font-size: 0.7rem; }
-            .data-table h3 { font-size: 1.1rem; }
-            .admin-login-area button {
-                min-width: 55px;
-                padding: 2px 5px;
-                font-size: 1.0rem;
-            }
-            .admin-login-area input {
-                width: 140px;
-            }
+            body { padding: 8px; }
+            .container { width: 100%; overflow-x: hidden; }
+            .logo-area img { height: 130px; max-width: auto; }
+            .title-text h1 { font-size: 2.1rem; }
+            .title-text p { font-size: 0.9rem; }
+            .header { gap: 5px; margin-bottom: 10px; }
+            .month-bar { padding: 8px 5px; gap: 8px; border-radius: 25px; }
+            .month-picker { gap: 4px; padding: 2px 5px; width: 150%; justify-content: center; }
+            .month-picker label { font-size: 1.3rem; width: 150%; text-align: center; }
+            select { padding: 2px 6px; font-size: 0.9rem; width: auto; max-width: 150px; }
+            #loadMonthBtn { padding: 3px 4px; font-size: 0.9rem; }
+            .print-buttons { gap: 4px; width: 100%; justify-content: center; }
+            .print-buttons button { padding: 3px 5px; font-size: 1.0rem; }
+            .admin-login-area { padding: 2px; gap: 3px; justify-content: center; }
+            .admin-login-area span { font-size: 1.2rem; margin-left: 0px; width: 120%; text-align: center; }
+            .admin-login-area input { width: 150px; font-size: 0.9rem; padding: 3px 5px; margin-left: 0px; }
+            .admin-login-area button { min-width: 90px; padding: 4px 8px; font-size: 0.9rem; margin-left: 0px; }
+            .action-buttons { gap: 5px; }
+            .translate-btn, .whatsapp-btn { padding: 3px 6px; font-size: 0.8rem; }
+            .forms-row { gap: 10px; margin-bottom: 15px; }
+            .card { padding: 10px; min-width: 100%; }
+            .card h2 { font-size: 0.9rem; }
+            .form-group { margin-bottom: 8px; }
+            .form-group label { font-size: 0.9rem; }
+            .form-group input { padding: 4px 6px; font-size: 0.7rem; }
+            .card button { padding: 4px 8px; font-size: 0.7rem; width: 100%; }
+            .tables-section { gap: 15px; }
+            .data-table { padding: 5px; border-radius: 15px; }
+            .data-table h3 { font-size: 0.9rem; padding-right: 8px; margin-bottom: 8px; }
+            table { font-size: 0.9rem; min-width: 100%; }
+            th, td { padding: 5px 3px; font-size: 0.9rem; }
+            .edit-btn, .delete-btn { padding: 2px 4px; font-size: 0.8rem; margin: 1px; }
+            .warning-toast { padding: 6px 12px; font-size: 0.7rem; white-space: normal; text-align: center; width: 90%; }
+            body.lang-en .data-table h3 { padding-left: 12px; padding-right: 0; }
         }
     </style>
 </head>
@@ -419,77 +500,77 @@
 <div class="container">
     <div class="header">
         <div class="logo-area">
-            <img src="https://user-uploads-thumbs.shutterstock.com/aws-cloudfront-user-asset-uploads-prod-us-east-1/uploads/2924ad88-bfab-47c5-a517-501fe44d9c00/p/404a6d10dfce49f13b3b94935a117c0b12bf0fa9/1780853764945/logo%20(4)/png/1780853768/1500x1500/fit/07fd243848d089b6b17b66300efa486f1d3253f5/logo%20(4).jpg" alt="خدام القرآن لوگو">
+            <img src="https://i.postimg.cc/SRn7pCR4/logo.png" alt="خدام القرآن لوگو">
         </div>
         <div class="title-text">
-            <h1 id="mainTitle"><i class="fas fa-book-quran"></i> خدام القرآن ویلفئیر لالیاں</h1>
+            <h1 id="mainTitle">خدام القرآن ویلفئیر لالیاں</h1>
             <p id="subTitle">مستقل ریکارڈ | ماہانہ اخراجات و عطیات | پرمننٹ ڈیٹا (2019 سے)</p>
-            <div class="mode-badge" id="modeBadge"><i class="fas fa-eye"></i> <span id="modeText">صرف دیکھنے کا</span></div>
+            <div class="mode-badge" id="modeBadge"><span id="modeText">صرف دیکھنے کا</span></div>
         </div>
     </div>
 
     <div class="admin-login-area">
-        <span style="font-size:1.0rem;"><i class="fas fa-lock"></i> <span id="adminPanelText">ایڈمن پینل (ترمیم کے لیے)</span></span>
+        <span style="font-size:1.0rem;"><span id="adminPanelText">ایڈمن پینل (ترمیم کے لیے)</span></span>
         <input type="password" id="adminPass" placeholder="پاس ورڈ درج کریں">
-        <button id="enableEditBtn"><i class="fas fa-edit"></i> <span id="editModeText">ترمیم موڈ</span></button>
-        <button id="disableEditBtn" style="background:#9e4403; color: #000000;"><i class="fas fa-eye"></i> <span id="viewOnlyText">صرف دیکھنا</span></button>
+        <button id="enableEditBtn"><span id="editModeText">ترمیم موڈ</span></button>
+        <button id="disableEditBtn" style="background:#9e4403; color: #000000;"><span id="viewOnlyText">صرف دیکھنا</span></button>
     </div>
 
     <div class="action-buttons">
         <button id="translateBtn" class="translate-btn">
-            <i class="fas fa-language"></i> <span id="translateBtnText">English / اردو</span>
+            <span id="translateBtnText">English / اردو</span>
         </button>
         <a href="https://wa.me/923458075569?text=Assalamu%20Alaikum%20-%20خدام%20القرآن%20ویلفئیر%20لالیاں%20سے%20رابطہ" 
            target="_blank" class="whatsapp-btn" id="whatsappBtn">
-            <i class="fab fa-whatsapp"></i> <span id="whatsappText">WhatsApp پر رابطہ کریں</span>
+            <span id="whatsappText">WhatsApp پر رابطہ کریں</span>
         </a>
     </div>
 
     <div class="month-bar">
         <div class="month-picker">
-            <label><i class="fas fa-calendar-alt"></i> ماہ منتخب کریں (جنوری 2019 سے):</label>
+            <label>ماہ منتخب کریں (جنوری 2019 سے):</label>
             <select id="monthSelect"></select>
-            <button id="loadMonthBtn"><i class="fas fa-sync-alt"></i> لوڈ کریں</button>
+            <button id="loadMonthBtn">لوڈ کریں</button>
         </div>
         <div class="print-buttons">
-            <button id="printPage1Btn"><i class="fas fa-print"></i> <span id="printPage1Text">صفحہ 1 (اخراجات)</span></button>
-            <button id="printPage2Btn"><i class="fas fa-print"></i> <span id="printPage2Text">صفحہ 2 (عطیات)</span></button>
-            <button id="fullPrintBtn"><i class="fas fa-file-pdf"></i> <span id="fullPrintText">دونوں صفحات</span></button>
+            <button id="printPage1Btn"><span id="printPage1Text">صفحہ 1 (اخراجات)</span></button>
+            <button id="printPage2Btn"><span id="printPage2Text">صفحہ 2 (عطیات)</span></button>
+            <button id="fullPrintBtn"><span id="fullPrintText">دونوں صفحات</span></button>
         </div>
     </div>
 
     <div class="forms-row" id="adminFormsContainer" style="display: none;">
         <div class="card">
-            <h2><i class="fas fa-receipt"></i> <span id="expenseFormTitle">صفحہ 1 - نیا اخراجات</span></h2>
+            <h2><span id="expenseFormTitle">صفحہ 1 - نیا اخراجات</span></h2>
             <form id="expenseForm">
                 <div class="form-group"><label id="expDateLabel">تاریخ (YYYY-MM-DD)</label><input type="date" id="expDate" required></div>
                 <div class="form-group"><label id="expItemLabel">نام اشیاء</label><input type="text" id="expItem" required></div>
                 <div class="form-group"><label id="expAmountLabel">رقم (PKR)</label><input type="number" id="expAmount" step="0.01" required></div>
                 <div class="form-group"><label id="expSignLabel">دستخط</label><input type="text" id="expSign" placeholder="اختیاری"></div>
-                <button type="submit"><i class="fas fa-save"></i> <span id="expSaveBtn">محفوظ کریں</span></button>
+                <button type="submit"><span id="expSaveBtn">محفوظ کریں</span></button>
             </form>
         </div>
         <div class="card">
-            <h2><i class="fas fa-hand-holding-heart"></i> <span id="donationFormTitle">صفحہ 2 - نیا عطیہ</span></h2>
+            <h2><span id="donationFormTitle">صفحہ 2 - نیا عطیہ</span></h2>
             <form id="donationForm">
                 <div class="form-group"><label id="donDateLabel">تاریخ</label><input type="date" id="donDate" required></div>
                 <div class="form-group"><label id="donorNameLabel">نام ڈونیٹر</label><input type="text" id="donorName" required></div>
                 <div class="form-group"><label id="donAmountLabel">رقم (PKR)</label><input type="number" id="donAmount" step="0.01" required></div>
                 <div class="form-group"><label id="donSignLabel">دستخط</label><input type="text" id="donSign" placeholder="اختیاری"></div>
-                <button type="submit"><i class="fas fa-donate"></i> <span id="donSaveBtn">محفوظ کریں</span></button>
+                <button type="submit"><span id="donSaveBtn">محفوظ کریں</span></button>
             </form>
         </div>
     </div>
 
     <div class="tables-section">
         <div class="data-table">
-            <h3><i class="fas fa-chart-line"></i> <span id="expenseTableTitle">اخراجات (صفحہ 1)</span></h3>
+            <h3><span id="expenseTableTitle">اخراجات (صفحہ 1)</span></h3>
             <table id="expenseTable">
                 <thead>
                     <tr>
-                        <th class="sortable" data-sort="date" data-table="expense"><span id="expDateCol">تاریخ</span> <i class="fas fa-arrows-up-down"></i></th>
-                        <th class="sortable" data-sort="item" data-table="expense"><span id="expItemCol">اشیاء</span> <i class="fas fa-arrows-up-down"></i></th>
-                        <th class="sortable" data-sort="amount" data-table="expense"><span id="expAmountCol">رقم</span> <i class="fas fa-arrows-up-down"></i></th>
+                        <th class="sortable" data-sort="date" data-table="expense"><span id="expDateCol">تاریخ</span></th>
+                        <th class="sortable" data-sort="item" data-table="expense"><span id="expItemCol">اشیاء</span></th>
+                        <th class="sortable" data-sort="amount" data-table="expense"><span id="expAmountCol">رقم</span></th>
                         <th><span id="expSignCol">دستخط</span></th>
                         <th><span id="expActionCol">عمل</span></th>
                     </tr>
@@ -501,13 +582,13 @@
         </div>
 
         <div class="data-table">
-            <h3><i class="fas fa-heart"></i> <span id="donationTableTitle">عطیات (صفحہ 2)</span></h3>
+            <h3><span id="donationTableTitle">عطیات (صفحہ 2)</span></h3>
             <table id="donationTable">
                 <thead>
                     <tr>
-                        <th class="sortable" data-sort="date" data-table="donation"><span id="donDateCol">تاریخ</span> <i class="fas fa-arrows-up-down"></i></th>
-                        <th class="sortable" data-sort="donor" data-table="donation"><span id="donDonorCol">نام ڈونیٹر</span> <i class="fas fa-arrows-up-down"></i></th>
-                        <th class="sortable" data-sort="amount" data-table="donation"><span id="donAmountCol">ڈونیشن</span> <i class="fas fa-arrows-up-down"></i></th>
+                        <th class="sortable" data-sort="date" data-table="donation"><span id="donDateCol">تاریخ</span></th>
+                        <th class="sortable" data-sort="donor" data-table="donation"><span id="donDonorCol">نام ڈونیٹر</span></th>
+                        <th class="sortable" data-sort="amount" data-table="donation"><span id="donAmountCol">ڈونیشن</span></th>
                         <th><span id="donSignCol">دستخط</span></th>
                         <th><span id="donActionCol">عمل</span></th>
                     </tr>
@@ -518,7 +599,20 @@
             </table>
         </div>
     </div>
-    <div class="footer-note"><i class="fas fa-database"></i> <span id="footerText">خدام القرآن ویلفئیر لالیاں - خدمت خلق</span></div>
+    <div class="footer-note"><span id="footerText">خدام القرآن ویلفئیر لالیاں - خدمت خلق</span></div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3 id="editModalTitle">ترمیم کریں</h3>
+        <input type="hidden" id="editId">
+        <input type="hidden" id="editType">
+        <input type="hidden" id="editMonth">
+        <div id="editFields"></div>
+        <button id="saveEditBtn" style="background:#006eae;">محفوظ کریں</button>
+        <button id="closeModalBtn" style="background:#9e4403;">منسوخ</button>
+    </div>
 </div>
 
 <script>
@@ -567,7 +661,6 @@
             viewOnlyText: "صرف دیکھنا",
             translateBtnText: "English / اردو",
             whatsappText: "WhatsApp پر رابطہ کریں",
-            monthLabel: "ماہ (جنوری 2019 سے):",
             loadBtnText: "لوڈ",
             printPage1Text: "صفحہ 1 (اخراجات)",
             printPage2Text: "صفحہ 2 (عطیات)",
@@ -599,7 +692,7 @@
             expEmptyMsg: "ماہ منتخب کریں",
             donEmptyMsg: "ماہ منتخب کریں",
             footerText: "تمام ڈیٹا مستقل محفوظ | صرف مجاز ایڈمن ترمیم کر سکتے ہیں",
-            editModeActive: "✅ ترمیم موڈ فعال! اب آپ ڈیٹا شامل/حذف کر سکتے ہیں۔",
+            editModeActive: "✅ ترمیم موڈ فعال! اب آپ ڈیٹا شامل/ترمیم/حذف کر سکتے ہیں۔",
             editModeWarning: "⚠️ آپ صرف دیکھ سکتے ہیں، ترمیم کی اجازت نہیں ہے۔ صحیح پاس ورڈ درکار ہے۔",
             viewOnlyActive: "👁️ صرف دیکھنے کا موڈ فعال",
             expenseSaved: "✅ اخراجات محفوظ",
@@ -608,7 +701,15 @@
             enterValidInfo: "درست معلومات درج کریں",
             deleteConfirm: "حذف کریں؟",
             noExpenses: "اس ماہ کوئی اخراجات نہیں",
-            noDonations: "اس ماہ کوئی عطیات نہیں"
+            noDonations: "اس ماہ کوئی عطیات نہیں",
+            editExpenseTitle: "اخراجات میں ترمیم",
+            editDonationTitle: "عطیہ میں ترمیم",
+            editSuccess: "✅ ڈیٹا ترمیم کر دیا گیا",
+            editDate: "تاریخ:",
+            editItem: "اشیاء:",
+            editAmount: "رقم:",
+            editSign: "دستخط:",
+            editDonor: "نام ڈونیٹر:"
         },
         en: {
             mainTitle: "Khuddam ul Quran Welfare Lalian",
@@ -619,7 +720,6 @@
             viewOnlyText: "View Only",
             translateBtnText: "اردو / English",
             whatsappText: "Contact on WhatsApp",
-            monthLabel: "Month (From January 2019):",
             loadBtnText: "Load",
             printPage1Text: "Page 1 (Expenses)",
             printPage2Text: "Page 2 (Donations)",
@@ -651,7 +751,7 @@
             expEmptyMsg: "Select a month",
             donEmptyMsg: "Select a month",
             footerText: "All data is permanently saved | Only authorized admin can edit",
-            editModeActive: "✅ Edit mode activated! You can now add/delete data.",
+            editModeActive: "✅ Edit mode activated! You can now add/edit/delete data.",
             editModeWarning: "⚠️ You can only view, editing is not allowed. Correct password required.",
             viewOnlyActive: "👁️ View only mode activated",
             expenseSaved: "✅ Expense saved",
@@ -660,7 +760,15 @@
             enterValidInfo: "Please enter valid information",
             deleteConfirm: "Delete?",
             noExpenses: "No expenses this month",
-            noDonations: "No donations this month"
+            noDonations: "No donations this month",
+            editExpenseTitle: "Edit Expense",
+            editDonationTitle: "Edit Donation",
+            editSuccess: "✅ Data updated successfully",
+            editDate: "Date:",
+            editItem: "Item:",
+            editAmount: "Amount:",
+            editSign: "Signature:",
+            editDonor: "Donor Name:"
         }
     };
     
@@ -668,7 +776,7 @@
     
     function updateLanguage() {
         const t = translations[currentLanguage];
-        document.getElementById('mainTitle').innerHTML = `<i class="fas fa-book-quran"></i> ${t.mainTitle}`;
+        document.getElementById('mainTitle').innerText = t.mainTitle;
         document.getElementById('subTitle').innerText = t.subTitle;
         document.getElementById('modeText').innerText = t.modeText;
         document.getElementById('adminPanelText').innerText = t.adminPanelText;
@@ -676,13 +784,12 @@
         document.getElementById('viewOnlyText').innerText = t.viewOnlyText;
         document.getElementById('translateBtnText').innerText = t.translateBtnText;
         document.getElementById('whatsappText').innerText = t.whatsappText;
-        document.getElementById('monthLabel').innerHTML = `<i class="fas fa-calendar-alt"></i> ${t.monthLabel}`;
         document.getElementById('loadBtnText').innerText = t.loadBtnText;
         document.getElementById('printPage1Text').innerText = t.printPage1Text;
         document.getElementById('printPage2Text').innerText = t.printPage2Text;
         document.getElementById('fullPrintText').innerText = t.fullPrintText;
-        document.getElementById('expenseFormTitle').innerHTML = `<i class="fas fa-receipt"></i> ${t.expenseFormTitle}`;
-        document.getElementById('donationFormTitle').innerHTML = `<i class="fas fa-hand-holding-heart"></i> ${t.donationFormTitle}`;
+        document.getElementById('expenseFormTitle').innerText = t.expenseFormTitle;
+        document.getElementById('donationFormTitle').innerText = t.donationFormTitle;
         document.getElementById('expDateLabel').innerText = t.expDateLabel;
         document.getElementById('expItemLabel').innerText = t.expItemLabel;
         document.getElementById('expAmountLabel').innerText = t.expAmountLabel;
@@ -693,8 +800,8 @@
         document.getElementById('donAmountLabel').innerText = t.donAmountLabel;
         document.getElementById('donSignLabel').innerText = t.donSignLabel;
         document.getElementById('donSaveBtn').innerText = t.donSaveBtn;
-        document.getElementById('expenseTableTitle').innerHTML = `<i class="fas fa-chart-line"></i> ${t.expenseTableTitle}`;
-        document.getElementById('donationTableTitle').innerHTML = `<i class="fas fa-heart"></i> ${t.donationTableTitle}`;
+        document.getElementById('expenseTableTitle').innerText = t.expenseTableTitle;
+        document.getElementById('donationTableTitle').innerText = t.donationTableTitle;
         document.getElementById('expDateCol').innerText = t.expDateCol;
         document.getElementById('expItemCol').innerText = t.expItemCol;
         document.getElementById('expAmountCol').innerText = t.expAmountCol;
@@ -708,6 +815,7 @@
         document.getElementById('expEmptyMsg').innerText = t.expEmptyMsg;
         document.getElementById('donEmptyMsg').innerText = t.donEmptyMsg;
         document.getElementById('footerText').innerText = t.footerText;
+        document.getElementById('editModalTitle').innerText = t.editExpenseTitle;
         
         if (currentLanguage === 'en') {
             document.body.classList.add('lang-en');
@@ -741,7 +849,7 @@
         if (existing) existing.remove();
         const toast = document.createElement('div');
         toast.className = 'warning-toast';
-        toast.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+        toast.innerHTML = message;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
@@ -755,6 +863,22 @@
     function addDonation(obj) { let arr = getAllDonations(); arr.push(obj); saveAllDonations(arr); }
     function deleteExpense(id) { saveAllExpenses(getAllExpenses().filter(e => e.id !== id)); }
     function deleteDonation(id) { saveAllDonations(getAllDonations().filter(d => d.id !== id)); }
+    function updateExpense(id, updatedData) { 
+        let arr = getAllExpenses();
+        let index = arr.findIndex(e => e.id === id);
+        if (index !== -1) {
+            arr[index] = { ...arr[index], ...updatedData };
+            saveAllExpenses(arr);
+        }
+    }
+    function updateDonation(id, updatedData) { 
+        let arr = getAllDonations();
+        let index = arr.findIndex(d => d.id === id);
+        if (index !== -1) {
+            arr[index] = { ...arr[index], ...updatedData };
+            saveAllDonations(arr);
+        }
+    }
     function filterByMonth(items, month) { return items.filter(i => i.month === month); }
 
     function sortExpenses() {
@@ -797,6 +921,107 @@
         });
     }
 
+    // Edit Functions
+    function openEditModal(type, id) {
+        const t = translations[currentLanguage];
+        let item;
+        if (type === 'expense') {
+            item = getAllExpenses().find(e => e.id === id);
+            document.getElementById('editModalTitle').innerText = t.editExpenseTitle;
+        } else {
+            item = getAllDonations().find(d => d.id === id);
+            document.getElementById('editModalTitle').innerText = t.editDonationTitle;
+        }
+        
+        if (!item) return;
+        
+        document.getElementById('editId').value = id;
+        document.getElementById('editType').value = type;
+        document.getElementById('editMonth').value = item.month;
+        
+        let fieldsHtml = '';
+        if (type === 'expense') {
+            fieldsHtml = `
+                <label>${t.editDate}</label>
+                <input type="date" id="editDate" value="${item.date}">
+                <label>${t.editItem}</label>
+                <input type="text" id="editItemName" value="${escapeHtml(item.item)}">
+                <label>${t.editAmount}</label>
+                <input type="number" id="editAmountVal" step="0.01" value="${item.amount}">
+                <label>${t.editSign}</label>
+                <input type="text" id="editSignVal" value="${escapeHtml(item.sign || '')}">
+            `;
+        } else {
+            fieldsHtml = `
+                <label>${t.editDate}</label>
+                <input type="date" id="editDate" value="${item.date}">
+                <label>${t.editDonor}</label>
+                <input type="text" id="editDonorName" value="${escapeHtml(item.donor)}">
+                <label>${t.editAmount}</label>
+                <input type="number" id="editAmountVal" step="0.01" value="${item.amount}">
+                <label>${t.editSign}</label>
+                <input type="text" id="editSignVal" value="${escapeHtml(item.sign || '')}">
+            `;
+        }
+        
+        document.getElementById('editFields').innerHTML = fieldsHtml;
+        document.getElementById('editModal').style.display = 'flex';
+    }
+    
+    function saveEdit() {
+        const t = translations[currentLanguage];
+        const id = document.getElementById('editId').value;
+        const type = document.getElementById('editType').value;
+        const month = document.getElementById('editMonth').value;
+        const newDate = document.getElementById('editDate').value;
+        const newAmount = parseFloat(document.getElementById('editAmountVal').value);
+        const newSign = document.getElementById('editSignVal').value;
+        
+        if (!newDate || isNaN(newAmount)) {
+            showWarningMessage(t.enterValidInfo);
+            return;
+        }
+        
+        if (type === 'expense') {
+            const newItem = document.getElementById('editItemName').value;
+            if (!newItem) {
+                showWarningMessage(t.enterValidInfo);
+                return;
+            }
+            updateExpense(id, {
+                date: newDate,
+                item: newItem,
+                amount: newAmount,
+                sign: newSign,
+                month: month
+            });
+        } else {
+            const newDonor = document.getElementById('editDonorName').value;
+            if (!newDonor) {
+                showWarningMessage(t.enterValidInfo);
+                return;
+            }
+            updateDonation(id, {
+                date: newDate,
+                donor: newDonor,
+                amount: newAmount,
+                sign: newSign,
+                month: month
+            });
+        }
+        
+        document.getElementById('editModal').style.display = 'none';
+        loadAndRenderData();
+        showWarningMessage(t.editSuccess);
+    }
+    
+    function closeModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+    
+    document.getElementById('saveEditBtn').onclick = saveEdit;
+    document.getElementById('closeModalBtn').onclick = closeModal;
+
     function renderTablesBody() {
         const t = translations[currentLanguage];
         const expBody = document.getElementById("expenseTableBody");
@@ -809,7 +1034,7 @@
                     <td>${escapeHtml(exp.item)}</td>
                     <td>${parseFloat(exp.amount).toFixed(2)} PKR</td>
                     <td>${escapeHtml(exp.sign || '—')}</td>
-                    <td>${isAdminMode ? `<button class="delete-btn" data-type="expense" data-id="${exp.id}"><i class="fas fa-trash-alt"></i> ${t.expActionCol}</button>` : '—'}</td>
+                    <td>${isAdminMode ? `<button class="edit-btn" data-type="expense" data-id="${exp.id}">ترمیم</button><button class="delete-btn" data-type="expense" data-id="${exp.id}">حذف</button>` : '—'}</td>
                 </tr>
             `).join('');
         }
@@ -824,14 +1049,18 @@
                     <td>${escapeHtml(don.donor)}</td>
                     <td>${parseFloat(don.amount).toFixed(2)} PKR</td>
                     <td>${escapeHtml(don.sign || '—')}</td>
-                    <td>${isAdminMode ? `<button class="delete-btn" data-type="donation" data-id="${don.id}"><i class="fas fa-trash-alt"></i> ${t.donActionCol}</button>` : '—'}</td>
+                    <td>${isAdminMode ? `<button class="edit-btn" data-type="donation" data-id="${don.id}">ترمیم</button><button class="delete-btn" data-type="donation" data-id="${don.id}">حذف</button>` : '—'}</td>
                 </tr>
             `).join('');
         }
 
         if (isAdminMode) {
-            document.querySelectorAll('.delete-btn[data-type="expense"]').forEach(btn => btn.onclick = () => { if(confirm(t.deleteConfirm)) { deleteExpense(btn.dataset.id); loadAndRenderData(); } });
-            document.querySelectorAll('.delete-btn[data-type="donation"]').forEach(btn => btn.onclick = () => { if(confirm(t.deleteConfirm)) { deleteDonation(btn.dataset.id); loadAndRenderData(); } });
+            document.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => openEditModal(btn.dataset.type, btn.dataset.id));
+            document.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => { if(confirm(t.deleteConfirm)) { 
+                if(btn.dataset.type === 'expense') deleteExpense(btn.dataset.id);
+                else deleteDonation(btn.dataset.id);
+                loadAndRenderData(); 
+            } });
         }
     }
 
@@ -874,28 +1103,6 @@
             sortDonations();
         }
         renderTablesBody();
-        updateSortIcons();
-    }
-
-    function updateSortIcons() {
-        document.querySelectorAll('#expenseTable .sortable').forEach(th => {
-            const column = th.dataset.sort;
-            const icon = th.querySelector('i');
-            if (column === expenseSortColumn) {
-                icon.className = expenseSortOrder === 'asc' ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
-            } else {
-                icon.className = 'fas fa-arrows-up-down';
-            }
-        });
-        document.querySelectorAll('#donationTable .sortable').forEach(th => {
-            const column = th.dataset.sort;
-            const icon = th.querySelector('i');
-            if (column === donationSortColumn) {
-                icon.className = donationSortOrder === 'asc' ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
-            } else {
-                icon.className = 'fas fa-arrows-up-down';
-            }
-        });
     }
 
     function populateMonthSelect() {
@@ -970,10 +1177,17 @@
         th.onclick = () => handleSort('donation', th.dataset.sort);
     });
     
-    function printPage(selector, title) { let content = document.querySelector(selector).cloneNode(true); content.querySelectorAll('.delete-btn').forEach(btn=>btn.remove()); let win=window.open(); win.document.write(`<html dir="rtl"><head><title>${title}</title><style>body{padding:20px} table{border:1px solid #000;width:100%;border-collapse:collapse} th,td{border:1px solid #000;padding:6px}</style></head><body><h2>خدام القرآن ویلفئیر لالیاں</h2><p>ماہ: ${currentMonth}</p>${content.innerHTML}</body></html>`); win.document.close(); win.print(); }
+    function printPage(selector, title) { 
+        let content = document.querySelector(selector).cloneNode(true); 
+        content.querySelectorAll('.delete-btn, .edit-btn').forEach(btn=>btn.remove()); 
+        let win=window.open(); 
+        win.document.write(`<html dir="rtl"><head><title>${title}</title><style>body{padding:20px} table{border:1px solid #000;width:100%;border-collapse:collapse} th,td{border:1px solid #000;padding:6px}</style></head><body><h2>خدام القرآن ویلفئیر لالیاں</h2><p>ماہ: ${currentMonth}</p>${content.innerHTML}</body></html>`); 
+        win.document.close(); 
+        win.print(); 
+    }
     document.getElementById("printPage1Btn").onclick = () => { if(currentMonth) printPage(".data-table:first-child","اخراجات"); else showWarningMessage(translations[currentLanguage].selectMonthFirst); };
     document.getElementById("printPage2Btn").onclick = () => { if(currentMonth) printPage(".data-table:last-child","عطیات"); else showWarningMessage(translations[currentLanguage].selectMonthFirst); };
-    document.getElementById("fullPrintBtn").onclick = () => { if(!currentMonth) { showWarningMessage(translations[currentLanguage].selectMonthFirst); return; } let exp=document.querySelector(".data-table:first-child").cloneNode(true); let don=document.querySelector(".data-table:last-child").cloneNode(true); exp.querySelectorAll('.delete-btn').forEach(btn=>btn.remove()); don.querySelectorAll('.delete-btn').forEach(btn=>btn.remove()); let win=window.open(); win.document.write(`<html dir="rtl"><head><title>مکمل رپورٹ</title><style>body{padding:20px} table{border:1px solid #000;width:100%} th,td{border:1px solid #000;padding:6px} .page-break{page-break-before:always}</style></head><body><h2>خدام القرآن ویلفئیر لالیاں</h2><p>ماہ: ${currentMonth}</p>${exp.outerHTML}<div class="page-break"></div>${don.outerHTML}</body></html>`); win.document.close(); win.print(); };
+    document.getElementById("fullPrintBtn").onclick = () => { if(!currentMonth) { showWarningMessage(translations[currentLanguage].selectMonthFirst); return; } let exp=document.querySelector(".data-table:first-child").cloneNode(true); let don=document.querySelector(".data-table:last-child").cloneNode(true); exp.querySelectorAll('.delete-btn, .edit-btn').forEach(btn=>btn.remove()); don.querySelectorAll('.delete-btn, .edit-btn').forEach(btn=>btn.remove()); let win=window.open(); win.document.write(`<html dir="rtl"><head><title>مکمل رپورٹ</title><style>body{padding:20px} table{border:1px solid #000;width:100%} th,td{border:1px solid #000;padding:6px} .page-break{page-break-before:always}</style></head><body><h2>خدام القرآن ویلفئیر لالیاں</h2><p>ماہ: ${currentMonth}</p>${exp.outerHTML}<div class="page-break"></div>${don.outerHTML}</body></html>`); win.document.close(); win.print(); };
     
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m=>m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
     
@@ -981,6 +1195,14 @@
     disableEditMode(); 
     loadSelectedMonth();
     updateLanguage();
+    
+    // Close modal on outside click
+    window.onclick = function(event) {
+        const modal = document.getElementById('editModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    }
 </script>
 </body>
 </html>
